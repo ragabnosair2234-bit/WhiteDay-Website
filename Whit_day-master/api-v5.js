@@ -9,7 +9,15 @@
  */
 const API_BASE = 'http://192.168.1.2:3000/api/rest';
 
-// Image pools per service type (t_id) — only confirmed real images
+// ── Auth helpers ────────────────────────────────────────────────────────────
+
+function getToken() { return localStorage.getItem('token') || ''; }
+function authHeaders() {
+  return { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken()}` };
+}
+
+// ── Image pools per service type (t_id) — only confirmed real images ────────
+
 const IMAGE_POOLS = {
   // Wedding Halls — hull series all confirmed real
   1: [
@@ -121,6 +129,15 @@ const IMAGE_POOLS = {
   ],
 };
 
+// ── Filter / sort state ───────────────────────────────────────────────────────
+
+/** Raw services returned by the API — kept for re-sorting without a new fetch */
+let _servicesCache    = [];
+let _currentPool      = [];
+let _currentContainerId = '';
+
+// ── UI helpers ───────────────────────────────────────────────────────────────
+
 /** Build star HTML (Font Awesome) */
 function buildStars(rating) {
   return Array.from({ length: 5 }).map((_, i) =>
@@ -140,15 +157,106 @@ function buildCard(s, imgSrc) {
         </div>
         <div class="text-right">
           <p class="card-price">${Number(s.price).toLocaleString()} L.E</p>
-          <button class="card-book-btn">Book now</button>
+          <button
+            class="card-book-btn"
+            data-service-id="${s.service_id}"
+            data-service-name="${s.s_name}"
+            data-service-price="${s.price}"
+            onclick="openBookingModal(this)"
+          >Book now</button>
         </div>
       </div>
     </div>`;
 }
 
 /**
+ * Render a list of services into the grid.
+ * Uses service_id % pool.length for a STABLE image↔name mapping that
+ * survives re-sorting (avoids names appearing under the wrong photo).
+ */
+function renderServices(data, pool, containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = data.map((s) => {
+    const imgFile = pool[s.service_id % pool.length];
+    const imgSrc  = `../img/${imgFile}`;
+    return buildCard(s, imgSrc);
+  }).join('');
+}
+
+/**
+ * Wire up the three filter buttons (Prices / Location / Ratings).
+ * Each click cycles: off → ascending → descending → off.
+ * Only one sort is active at a time; the others reset.
+ */
+function wireFilters() {
+  const buttons = Array.from(document.querySelectorAll('.filter-box'));
+  if (buttons.length < 3) return;
+
+  // Sort modes per button: 0=off, 1=asc, 2=desc
+  const state = [0, 0, 0];
+
+  const ICON_MAP = {
+    0: 'fa-sort',
+    1: 'fa-sort-up',
+    2: 'fa-sort-down',
+  };
+
+  const LABEL = ['Prices', 'Location', 'Ratings'];
+
+  function applyBtnState(btn, i) {
+    const icon = btn.querySelector('i');
+    if (icon) {
+      icon.className = `fas ${ICON_MAP[state[i]]}`;
+    }
+    // Highlight active sort button
+    btn.style.fontWeight = state[i] !== 0 ? '700' : '';
+  }
+
+  function sortData(idx) {
+    let data = [..._servicesCache];
+    if (state[idx] === 0) {
+      // No sort — restore original order (by avg_rating desc as returned by API)
+      return data;
+    }
+    const asc = state[idx] === 1;
+    if (idx === 0) {
+      // Prices
+      data.sort((a, b) => asc ? a.price - b.price : b.price - a.price);
+    } else if (idx === 1) {
+      // Location (city)
+      data.sort((a, b) => {
+        const ca = (a.city || '').toLowerCase();
+        const cb = (b.city || '').toLowerCase();
+        return asc ? ca.localeCompare(cb) : cb.localeCompare(ca);
+      });
+    } else {
+      // Ratings
+      data.sort((a, b) => asc ? a.avg_rating - b.avg_rating : b.avg_rating - a.avg_rating);
+    }
+    return data;
+  }
+
+  buttons.forEach((btn, i) => {
+    // Restore clean label (in case page was re-initialised)
+    btn.innerHTML = `${LABEL[i]} <i class="fas ${ICON_MAP[state[i]]}"></i>`;
+
+    btn.addEventListener('click', () => {
+      // Cycle state for this button
+      state[i] = (state[i] + 1) % 3;
+      // Reset all other buttons
+      state.forEach((_, j) => {
+        if (j !== i) { state[j] = 0; applyBtnState(buttons[j], j); }
+      });
+      applyBtnState(btn, i);
+      renderServices(sortData(i), _currentPool, _currentContainerId);
+    });
+  });
+}
+
+/**
  * Fetch services from the REST API and render cards.
- * Images cycle through the per-category pool so every card is different.
+ * Images use service_id % pool.length for a stable name↔image pairing.
  */
 async function loadServices(containerId, typeId, fallbackImg) {
   const container = document.getElementById(containerId);
@@ -166,14 +274,194 @@ async function loadServices(containerId, typeId, fallbackImg) {
 
     const pool = IMAGE_POOLS[typeId] || [fallbackImg];
 
-    container.innerHTML = json.data.map((s, idx) => {
-      const imgFile = pool[idx % pool.length];
-      const imgSrc  = `../img/${imgFile}`;
-      return buildCard(s, imgSrc);
-    }).join('');
+    // Cache for re-sorting on filter clicks
+    _servicesCache      = json.data;
+    _currentPool        = pool;
+    _currentContainerId = containerId;
+
+    renderServices(json.data, pool, containerId);
+
+    // Inject shared modals and wire filter buttons
+    injectModals();
+    wireFilters();
 
   } catch (err) {
     console.error('[loadServices] error:', err);
     container.innerHTML = `<p class="text-center col-span-full py-8 text-red-500">Error: ${err.message}</p>`;
   }
 }
+
+// ── Booking modal ─────────────────────────────────────────────────────────────
+
+let _modalsInjected = false;
+
+function injectModals() {
+  if (_modalsInjected) return;
+  _modalsInjected = true;
+
+  const html = `
+  <!-- Booking Modal -->
+  <div id="bookingModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+    <div class="bg-[#F5ECDF] rounded-2xl p-8 w-full max-w-md mx-4 shadow-xl relative font-serif">
+      <button onclick="closeBookingModal()" class="absolute top-3 right-4 text-2xl text-gray-500 hover:text-black">&times;</button>
+      <h2 class="text-2xl font-bold italic mb-1" id="bookingModalTitle">Book Service</h2>
+      <p class="text-gray-600 mb-4" id="bookingModalPrice"></p>
+      <label class="block mb-1 font-semibold">Event Date</label>
+      <input id="bookingEventDate" type="date" class="custom-input mb-4 w-full">
+      <label class="block mb-1 font-semibold">Notes (optional)</label>
+      <textarea id="bookingNotes" rows="3" class="custom-input mb-4 w-full resize-none" placeholder="Any special requests..."></textarea>
+      <div id="bookingError" class="text-red-600 text-sm mb-2 hidden"></div>
+      <button onclick="submitBooking()" class="btn-primary btn-auth w-full">Confirm Booking</button>
+    </div>
+  </div>
+
+  <!-- Wallet Modal -->
+  <div id="walletModal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+    <div class="bg-[#F5ECDF] rounded-2xl p-8 w-full max-w-md mx-4 shadow-xl relative font-serif">
+      <button onclick="closeWalletModal()" class="absolute top-3 right-4 text-2xl text-gray-500 hover:text-black">&times;</button>
+      <h2 class="text-2xl font-bold italic mb-4">My Wallet</h2>
+      <p class="mb-4">Balance: <span id="walletBalance" class="font-bold text-green-700">—</span> L.E</p>
+
+      <h3 class="font-semibold mb-1">Top Up</h3>
+      <input id="topupAmount" type="number" min="1" class="custom-input mb-3 w-full" placeholder="Amount (L.E)">
+      <div id="topupError" class="text-red-600 text-sm mb-2 hidden"></div>
+      <button onclick="submitTopup()" class="btn-primary w-full mb-4" style="padding:0.6rem; border-radius:12px;">Add Funds</button>
+
+      <h3 class="font-semibold mb-1">Transaction History</h3>
+      <div id="walletHistory" class="text-sm max-h-40 overflow-y-auto space-y-1 bg-white/40 rounded-xl p-3">
+        Loading…
+      </div>
+    </div>
+  </div>`;
+
+  document.body.insertAdjacentHTML('beforeend', html);
+  loadWalletData();
+}
+
+// ── Booking modal handlers ───────────────────────────────────────────────────
+
+let _currentServiceId = null;
+
+function openBookingModal(btn) {
+  if (!getToken()) {
+    alert('Please log in to make a booking.');
+    return;
+  }
+  _currentServiceId = btn.dataset.serviceId;
+  document.getElementById('bookingModalTitle').textContent = btn.dataset.serviceName;
+  document.getElementById('bookingModalPrice').textContent =
+    `Price: ${Number(btn.dataset.servicePrice).toLocaleString()} L.E`;
+  document.getElementById('bookingError').classList.add('hidden');
+  document.getElementById('bookingEventDate').value = '';
+  document.getElementById('bookingNotes').value = '';
+  document.getElementById('bookingModal').classList.remove('hidden');
+}
+
+function closeBookingModal() {
+  document.getElementById('bookingModal').classList.add('hidden');
+}
+
+async function submitBooking() {
+  const eventDate = document.getElementById('bookingEventDate').value;
+  const notes     = document.getElementById('bookingNotes').value;
+  const errEl     = document.getElementById('bookingError');
+  errEl.classList.add('hidden');
+
+  if (!eventDate) {
+    errEl.textContent = 'Please select an event date.';
+    errEl.classList.remove('hidden');
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API_BASE}/bookings`, {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ service_id: Number(_currentServiceId), event_date: eventDate, notes }),
+    });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.error || 'Booking failed');
+    closeBookingModal();
+    alert(`Booking confirmed! Booking ID: ${json.data.booking_id}`);
+  } catch (err) {
+    errEl.textContent = err.message;
+    errEl.classList.remove('hidden');
+  }
+}
+
+// ── Wallet modal handlers ─────────────────────────────────────────────────────
+
+function openWalletModal() {
+  if (!getToken()) { alert('Please log in to access your wallet.'); return; }
+  document.getElementById('walletModal').classList.remove('hidden');
+  loadWalletData();
+}
+
+function closeWalletModal() {
+  document.getElementById('walletModal').classList.add('hidden');
+}
+
+async function loadWalletData() {
+  if (!getToken()) return;
+  try {
+    const [balRes, histRes] = await Promise.all([
+      fetch(`${API_BASE}/wallet/balance`, { headers: authHeaders() }),
+      fetch(`${API_BASE}/wallet/history`,  { headers: authHeaders() }),
+    ]);
+    const balJson  = await balRes.json();
+    const histJson = await histRes.json();
+
+    const balEl = document.getElementById('walletBalance');
+    if (balEl && balJson.data) {
+      balEl.textContent = Number(balJson.data.balance).toLocaleString();
+    }
+
+    const histEl = document.getElementById('walletHistory');
+    if (histEl && histJson.data) {
+      if (!histJson.data.length) {
+        histEl.textContent = 'No transactions yet.';
+      } else {
+        histEl.innerHTML = histJson.data.map(t =>
+          `<div class="flex justify-between border-b border-gray-200 pb-1">
+             <span class="capitalize">${t.payment_method}</span>
+             <span class="${t.payment_method === 'topup' ? 'text-green-700' : 'text-red-600'}">
+               ${t.payment_method === 'topup' ? '+' : '-'}${Number(t.amount).toLocaleString()} L.E
+             </span>
+             <span class="text-gray-400">${t.payment_date}</span>
+           </div>`
+        ).join('');
+      }
+    }
+  } catch (err) {
+    console.warn('[wallet] failed to load:', err);
+  }
+}
+
+async function submitTopup() {
+  const amount = Number(document.getElementById('topupAmount').value);
+  const errEl  = document.getElementById('topupError');
+  errEl.classList.add('hidden');
+
+  if (!amount || amount <= 0) {
+    errEl.textContent = 'Enter a valid amount.';
+    errEl.classList.remove('hidden');
+    return;
+  }
+
+  try {
+    const res  = await fetch(`${API_BASE}/wallet/topup`, {
+      method: 'POST',
+      headers: authHeaders(),
+      body: JSON.stringify({ amount }),
+    });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.error || 'Top-up failed');
+    document.getElementById('topupAmount').value = '';
+    loadWalletData();
+    alert(`Wallet topped up by ${amount.toLocaleString()} L.E`);
+  } catch (err) {
+    errEl.textContent = err.message;
+    errEl.classList.remove('hidden');
+  }
+}
+

@@ -59,21 +59,26 @@
         </div>
     
         <script>
-            document.getElementById('loginBtn').addEventListener('click', async () => {
-                const email = document.getElementById('email').value;
+            async function doLogin() {
+                const email    = document.getElementById('email').value.trim();
                 const password = document.getElementById('password').value;
-                
+
+                if (!email || !password) {
+                    alert('Please enter your email and password.');
+                    return;
+                }
+
                 try {
                     const response = await fetch('http://192.168.1.2:3000/api/rest/auth/login', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ email, password })
                     });
-                    
+
                     const result = await response.json();
-                    if (response.ok) {
-                        localStorage.setItem('token', result.token);
-                        localStorage.setItem('user', JSON.stringify(result.user));
+                    if (response.ok && result.data) {
+                        localStorage.setItem('token', result.data.token);
+                        localStorage.setItem('user', JSON.stringify(result.data.user));
                         window.location.href = './welcome.html';
                     } else {
                         alert(result.error || 'Login failed');
@@ -82,6 +87,16 @@
                     console.error('Error logging in:', err);
                     alert('Network error. Please try again later.');
                 }
+            }
+
+            // Click handler
+            document.getElementById('loginBtn').addEventListener('click', doLogin);
+
+            // Enter key — fires on either input field
+            ['email', 'password'].forEach(id => {
+                document.getElementById(id).addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') { e.preventDefault(); doLogin(); }
+                });
             });
         </script>
 </body>
