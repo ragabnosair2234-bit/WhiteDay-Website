@@ -238,24 +238,19 @@ function wireFilters() {
   }
 
   buttons.forEach((btn, i) => {
-    // Remove any stale listeners by replacing the button node
-    const clone = btn.cloneNode(true);
-    btn.parentNode.replaceChild(clone, btn);
-    buttons[i] = clone;
+    // Restore clean label (in case page was re-initialised)
+    btn.innerHTML = `${LABEL[i]} <i class="fas ${ICON_MAP[state[i]]}"></i>`;
 
-    clone.addEventListener('click', () => {
+    btn.addEventListener('click', () => {
       // Cycle state for this button
       state[i] = (state[i] + 1) % 3;
       // Reset all other buttons
       state.forEach((_, j) => {
         if (j !== i) { state[j] = 0; applyBtnState(buttons[j], j); }
       });
-      applyBtnState(clone, i);
+      applyBtnState(btn, i);
       renderServices(sortData(i), _currentPool, _currentContainerId);
     });
-
-    // Reset icon label in case the pool is loaded again
-    clone.innerHTML = `${LABEL[i]} <i class="fas ${ICON_MAP[state[i]]}"></i>`;
   });
 }
 

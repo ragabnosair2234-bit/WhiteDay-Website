@@ -95,7 +95,7 @@
             // Enter key — fires on either input field
             ['email', 'password'].forEach(id => {
                 document.getElementById(id).addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter') doLogin();
+                    if (e.key === 'Enter') { e.preventDefault(); doLogin(); }
                 });
             });
         </script>
