@@ -41,12 +41,52 @@
                     <input type="password" placeholder="Password" class="custom-input">
                     <i class="fas fa-lock custom-input-icon"></i>
                 </div>
+                <div id="signup-error" class="text-red-600 text-center text-sm hidden"></div>
                 <div class="mt-8 text-center">
-                    <a href="./welcome.html" class="btn-primary btn-auth">Create account</a>
+                    <button id="signupBtn" class="btn-primary btn-auth">Create account</button>
                 </div>
             </div>
         </div>
     </div>
-    
+
+    <script>
+        const API_BASE = 'http://192.168.1.2:3000/api/rest';
+        document.getElementById('signupBtn').addEventListener('click', async () => {
+            const inputs = document.querySelectorAll('.custom-input');
+            const name     = inputs[0].value.trim();
+            const email    = inputs[1].value.trim();
+            const phone    = inputs[2].value.trim();
+            const password = inputs[3].value;
+            const errEl    = document.getElementById('signup-error');
+            errEl.classList.add('hidden');
+
+            if (!name || !email || !phone || !password) {
+                errEl.textContent = 'All fields are required.';
+                errEl.classList.remove('hidden');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, phone, password, role: 'customer' })
+                });
+                const result = await response.json();
+                if (response.ok && result.data) {
+                    localStorage.setItem('token', result.data.token);
+                    localStorage.setItem('user', JSON.stringify(result.data.user));
+                    window.location.href = './welcome.html';
+                } else {
+                    errEl.textContent = result.error || 'Registration failed. Please try again.';
+                    errEl.classList.remove('hidden');
+                }
+            } catch (err) {
+                console.error('Error registering:', err);
+                errEl.textContent = 'Network error. Please try again later.';
+                errEl.classList.remove('hidden');
+            }
+        });
+    </script>
 </body>
 </html>
