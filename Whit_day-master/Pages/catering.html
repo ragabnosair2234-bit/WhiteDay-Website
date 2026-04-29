@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>White Day - Bride's Breakfast</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
+    
+    <style>
+        .brandBullet {
+            background-color: #ebd4d2;
+        }
+    </style>
+</head>
+<body class="bg-[#F5ECDF] font-sans antialiased">
+    <div class="relative min-h-screen font-serif">
+        <!-- Hero Images Grid (Natural Height to avoid cropping) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 w-full shadow-md bg-white">
+            <div class="w-full h-[700px] md:h-[600px] overflow-hidden">
+                <img src="../img/Catering1.jpg" alt="Breakfast Spread" class="w-full h-full object-cover block">
+            </div>
+            <div class="w-full h-[700px] md:h-[600px] overflow-hidden">
+                <img src="../img/Catering2.jpg" alt="Healthy Platter" class="w-full h-full object-cover block">
+            </div>
+        </div>
+
+        <!-- Content Area (Full Width) -->
+        <div class="w-full px-6 md:px-16 lg:px-24 py-8">
+            
+            <!-- Title -->
+            <div class="text-center mb-4">
+                <h1 class="text-4xl md:text-6xl font-bold italic-text text-[#1a1a1a]">Bride's Breakfast & Snack packages</h1>
+            </div>
+            
+            <!-- Rating & Location -->
+            <div class="flex justify-center items-center space-x-3 text-lg mb-6">
+                <div id="catering-stars" class="flex text-yellow-500"></div>
+                <span id="catering-rating" class="font-bold text-xl">—</span>
+                <span class="text-gray-700 ml-3"><i class="fas fa-map-marker-alt mr-1"></i> Cairo, Egypt</span>
+            </div>
+
+            <!-- Price Section -->
+            <div class="relative flex py-2 items-center mb-4">
+                <div class="flex-grow border-t border-gray-400"></div>
+                <span class="flex-shrink-0 mx-6 text-gray-600 italic text-2xl">Price</span>
+                <div class="flex-grow border-t border-gray-400"></div>
+            </div>
+            <div class="text-center text-4xl mb-6 font-bold text-[#c9ada1] tracking-tight" id="catering-price">
+                Loading…
+            </div>
+
+            <!-- Details Section -->
+            <div class="relative flex py-2 items-center">
+                <div class="flex-grow border-t border-gray-400"></div>
+                <span class="flex-shrink-0 mx-6 text-gray-600 italic text-2xl">Details</span>
+                <div class="flex-grow border-t border-gray-400"></div>
+            </div>
+            
+            <!-- Two Column Details List -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-4 mt-6 mb-8 text-xl max-w-6xl mx-auto">
+                <!-- Column 1 -->
+                <div class="space-y-4">
+                    <div class="flex items-center"><span class="w-5 h-5 rounded-full brandBullet mr-4 flex-shrink-0 shadow-sm"></span> Fresh pastries & Pancakes</div>
+                    <div class="flex items-center"><span class="w-5 h-5 rounded-full brandBullet mr-4 flex-shrink-0 shadow-sm"></span> Scrambled Eggs & Cheese</div>
+                    <div class="flex items-center"><span class="w-5 h-5 rounded-full brandBullet mr-4 flex-shrink-0 shadow-sm"></span> Fruit platter & Yogurt</div>
+                    <div class="flex items-center"><span class="w-5 h-5 rounded-full brandBullet mr-4 flex-shrink-0 shadow-sm"></span> Juice, Tea & Coffee</div>
+                </div>
+                <!-- Column 2 -->
+                <div class="space-y-4">
+                    <div class="flex items-center"><span class="w-5 h-5 rounded-full brandBullet mr-4 flex-shrink-0 shadow-sm"></span> Chocolates & Cupcakes</div>
+                    <div class="flex items-center"><span class="w-5 h-5 rounded-full brandBullet mr-4 flex-shrink-0 shadow-sm"></span> Mini Sandwiches</div>
+                    <div class="flex items-center"><span class="w-5 h-5 rounded-full brandBullet mr-4 flex-shrink-0 shadow-sm"></span> Cheese & Crackers</div>
+                    <div class="flex items-center"><span class="w-5 h-5 rounded-full brandBullet mr-4 flex-shrink-0 shadow-sm"></span> Chips & Treats</div>
+                </div>
+            </div>
+
+            <!-- About Section -->
+            <div class="relative flex py-2 items-center">
+                <div class="flex-grow border-t border-gray-400"></div>
+                <span class="flex-shrink-0 mx-6 text-gray-600 italic text-2xl">About</span>
+                <div class="flex-grow border-t border-gray-400"></div>
+            </div>
+            <p class="text-center text-xl text-gray-800 leading-relaxed my-6 px-10 font-serif max-w-5xl mx-auto">
+                Start your wedding day with delicious breakfast and snacks specially prepared for the bride and groom, to keep the energy high and the smiles brighter.
+            </p>
+
+            <!-- Final Rating Summary -->
+            <div class="relative flex py-2 items-center mt-4">
+                <div class="flex-grow border-t border-gray-400"></div>
+                <span class="flex-shrink-0 mx-6 text-gray-600 italic text-xl">4.1 Rating</span>
+                <div class="flex-grow border-t border-gray-400"></div>
+            </div>
+            <p class="text-center text-lg text-gray-600 mb-8 mt-2">
+                <span id="catering-review-count">—</span> reviews
+            </p>
+
+            <!-- Book Now Button -->
+            <div class="text-center pb-8">
+                <button class="filter-box !justify-center !text-3xl py-6 rounded-full shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 w-full md:w-1/2 mx-auto uppercase tracking-widest">
+                    Book Now
+                </button>
+            </div>
+
+        </div>
+    </div>
+    <script src="../api-v5.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const res = await fetch(`${API_BASE}/services/42`);
+                const { data } = await res.json();
+                if (!data) return;
+                // Price
+                document.getElementById('catering-price').textContent =
+                    Number(data.price).toLocaleString() + ' L.E';
+                // Rating stars
+                const rating = Number(data.avg_rating) || 0;
+                document.getElementById('catering-rating').textContent = rating.toFixed(1);
+                const starsHtml = Array.from({length:5}).map((_,i) =>
+                    `<i class="${i < Math.floor(rating) ? 'fas' : 'far'} fa-star"></i>`).join('');
+                document.getElementById('catering-stars').innerHTML = starsHtml;
+                // Review count
+                document.getElementById('catering-review-count').textContent =
+                    'Based on ' + (data.review_count || 0);
+            } catch(e) { console.error('catering live data error', e); }
+        });
+    </script>
+</body>
+</html>

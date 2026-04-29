@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>White Day - Emergency Bag</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
+    
+    <style>
+        .brandBullet {
+            background-color: #ebd4d2;
+        }
+        .logo-header {
+            height: 200px !important;
+        }
+        @media (min-width: 768px) {
+            .logo-header {
+                height: 250px !important;
+            }
+        }
+        @media (min-width: 1024px) {
+            .logo-header {
+                height: 350px !important;
+            }
+        }
+        @media (min-width: 1280px) {
+            .logo-header {
+                height: 400px !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-[#F5ECDF] font-sans antialiased">
+    <!-- Background Flowers & Logo -->
+    <div class="flex justify-center items-center relative w-full text-center">
+        <img src="../img/flowers-tr.png" class="absolute top-0 right-0 w-32 md:w-56 opacity-80 z-0">
+        <img src="../img/flowers-tl.png" class="absolute top-0 left-0 w-32 md:w-56 opacity-80 z-0">
+        <img src="../img/logo.png" class="logo-header relative z-10 -mt-8 md:-mt-12">
+    </div>
+    <div class="relative min-h-screen font-serif -mt-16 md:-mt-24">
+        <!-- Main Content -->
+        <div class="relative z-10 w-full">
+            
+            <!-- Hero Images Grid (3 Columns with Gap) -->
+            <!-- Title -->
+            <div class="text-center mb-10 mt-10">
+                <h1 class="text-4xl md:text-6xl font-bold italic-text text-[#1a1a1a]">Emergency Bag</h1>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 w-full gap-4 px-4 mt-0">
+                <div class="w-full h-[400px] md:h-[500px] shadow-md overflow-hidden rounded-lg">
+                    <img src="../img/Emergency_Bag1.jpg" alt="Bag 1" class="w-full h-full object-cover block">
+                </div>
+                <div class="w-full h-[400px] md:h-[500px] shadow-md overflow-hidden rounded-lg">
+                    <img src="../img/Emergency_Bag2.jpg" alt="Bag 2" class="w-full h-full object-cover block">
+                </div>
+                <div class="w-full h-[400px] md:h-[500px] shadow-md overflow-hidden rounded-lg">
+                    <img src="../img/Emergency_Bag3.jpg" alt="Bag 3" class="w-full h-full object-cover block">
+                </div>
+            </div>
+
+            <!-- Content Area (Full Width) -->
+            <div class="w-full px-6 md:px-16 lg:px-24 py-8">
+                
+                
+                <!-- Rating & Location -->
+                <div class="flex justify-center items-center space-x-3 text-lg mb-6">
+                <div id="ebag-stars" class="flex text-yellow-500"></div>
+                    <span id="ebag-rating" class="font-bold text-xl">—</span>
+                    <span class="text-gray-700 ml-3"><i class="fas fa-map-marker-alt mr-1"></i> Cairo, Egypt</span>
+                </div>
+
+                <!-- Price Section -->
+                <div class="relative flex py-2 items-center mb-4">
+                    <div class="flex-grow border-t border-gray-400"></div>
+                    <span class="flex-shrink-0 mx-6 text-gray-600 italic text-2xl">Price</span>
+                    <div class="flex-grow border-t border-gray-400"></div>
+                </div>
+                <div class="text-center text-4xl mb-6 font-bold text-[#c9ada1] tracking-tight" id="ebag-price">
+                    Loading…
+                </div>
+
+                <!-- Details Section -->
+                <div class="relative flex py-2 items-center">
+                    <div class="flex-grow border-t border-gray-400"></div>
+                    <span class="flex-shrink-0 mx-6 text-gray-600 italic text-2xl">Details</span>
+                    <div class="flex-grow border-t border-gray-400"></div>
+                </div>
+                
+                <!-- Center Aligned Details List -->
+                <div class="max-w-2xl mx-auto flex flex-col items-center gap-y-4 mt-6 mb-8 text-2xl">
+                    <div class="flex items-center w-full"><span class="w-5 h-5 rounded-full brandBullet mr-6 flex-shrink-0 shadow-sm"></span> Mini sewing kit</div>
+                    <div class="flex items-center w-full"><span class="w-5 h-5 rounded-full brandBullet mr-6 flex-shrink-0 shadow-sm"></span> Stain remover pen</div>
+                    <div class="flex items-center w-full"><span class="w-5 h-5 rounded-full brandBullet mr-6 flex-shrink-0 shadow-sm"></span> Makeup touch-up kit</div>
+                    <div class="flex items-center w-full"><span class="w-5 h-5 rounded-full brandBullet mr-6 flex-shrink-0 shadow-sm"></span> Hair ties & Hair clips</div>
+                    <div class="flex items-center w-full"><span class="w-5 h-5 rounded-full brandBullet mr-6 flex-shrink-0 shadow-sm"></span> Pain Relievers & allergy pills</div>
+                </div>
+
+                <!-- About Section -->
+                <div class="relative flex py-2 items-center">
+                    <div class="flex-grow border-t border-gray-400"></div>
+                    <span class="flex-shrink-0 mx-6 text-gray-600 italic text-2xl">About Bridesmaid</span>
+                    <div class="flex-grow border-t border-gray-400"></div>
+                </div>
+                <p class="text-center text-xl text-gray-800 leading-relaxed my-6 px-10 font-serif max-w-5xl mx-auto">
+                    A fully stocked bag filled with everything a bride might need for any unexpected situation your brides.
+                </p>
+
+                <!-- Final Rating Summary -->
+                <div class="relative flex py-2 items-center mt-4">
+                    <div class="flex-grow border-t border-gray-400"></div>
+                    <span class="flex-shrink-0 mx-6 text-gray-600 italic text-xl">4.5 Rating</span>
+                    <div class="flex-grow border-t border-gray-400"></div>
+                </div>
+                <p class="text-center text-lg text-gray-600 mb-8 mt-2">
+                    <span id="ebag-review-count">—</span> reviews
+                </p>
+
+                <!-- Book Now Button -->
+                <div class="text-center pb-8">
+                    <button class="filter-box !justify-center !text-3xl py-6 rounded-full shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 w-full md:w-1/2 mx-auto uppercase tracking-widest">
+                        Book Now
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script src="../api-v5.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const res = await fetch(`${API_BASE}/services/40`);
+                const { data } = await res.json();
+                if (!data) return;
+                document.getElementById('ebag-price').textContent =
+                    Number(data.price).toLocaleString() + ' L.E';
+                const rating = Number(data.avg_rating) || 0;
+                document.getElementById('ebag-rating').textContent = rating.toFixed(1);
+                const starsHtml = Array.from({length:5}).map((_,i) =>
+                    `<i class="${i < Math.floor(rating) ? 'fas' : 'far'} fa-star"></i>`).join('');
+                document.getElementById('ebag-stars').innerHTML = starsHtml;
+                document.getElementById('ebag-review-count').textContent =
+                    'Based on ' + (data.review_count || 0);
+            } catch(e) { console.error('emergency bag live data error', e); }
+        });
+    </script>
+</body>
+</html>

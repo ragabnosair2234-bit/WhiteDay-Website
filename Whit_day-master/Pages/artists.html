@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ar" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>White Day - Artists & Singers</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .page { display: none; }
+        .page.active { display: block; }
+        .logo{ height: 200px !important; }
+        @media (min-width: 768px)  { .logo { height: 250px !important; } }
+        @media (min-width: 1024px) { .logo { height: 350px !important; } }
+        @media (min-width: 1280px) { .logo { height: 400px !important; } }
+    </style>
+</head>
+<body class="font-sans antialiased">
+    <div class="bg-[#F5ECDF] min-h-screen pt-2 md:pt-4 p-4 md:p-8 font-serif h-[100vh]">
+        <img src="../img/flowers-tr.png" class="absolute top-0 right-0 w-32 md:w-56 opacity-80" >
+        <img src="../img/flowers-tl.png" class="absolute top-0 left-0 w-32 md:w-56 opacity-80">
+        <img src="../img/logo.png" class="mx-auto logo -mt-8 md:-mt-12 relative z-10 ">
+        <div class="grid grid-cols-1 md:grid-cols-3 items-center mb-8 -mt-32 md:-mt-35 relative z-20">
+            <div class="w-full md:w-64 flex flex-col gap-1">
+                <button class="filter-box">Prices <i class="fas fa-sort"></i></button>
+                <button class="filter-box">Location <i class="fas fa-sort"></i></button>
+                <button class="filter-box">Ratings <i class="fas fa-sort"></i></button>
+            </div>
+            <div class="text-center">
+                <h2 class="text-4xl md:text-5xl font-bold italic-text -mt-4">The Artists</h2>
+            </div>
+            <div class="hidden md:block"></div>
+        </div>
+        <div class="max-w-full flex flex-col md:flex-row gap-8">
+            <!-- Grid Content — populated by api-v5.js -->
+            <div id="services-container" class="flex-1 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 pb-16"></div>
+        </div>
+    </div>
+    <script src="../api-v5.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', () => loadServices('services-container', 8, 'ar_1.jpeg'));</script>
+</body>
+</html>

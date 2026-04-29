@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>White Day - Relax & Glow Package</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
+    
+    <style>
+        .brandBullet {
+            background-color: #ebd4d2;
+        }
+    </style>
+</head>
+<body class="bg-[#F5ECDF] font-sans antialiased">
+    <div class="relative min-h-screen font-serif">
+        
+        <!-- Main Container -->
+        <div class="relative z-10 w-full">
+            
+            <!-- Hero Images Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 w-full shadow-md bg-white">
+                <div class="w-full h-[700px] md:h-[600px] overflow-hidden">
+                    <img src="../img/ExtraService2.jpg" alt="Spa and Sauna" class="w-full h-full object-cover block">
+                </div>
+                <div class="w-full h-[700px] md:h-[600px] overflow-hidden">
+                    <img src="../img/ExtraService1.jpg" alt="Jacuzzi" class="w-full h-full object-cover block">
+                </div>
+            </div>
+
+            <!-- Content Area (Full Width) -->
+            <div class="w-full px-6 md:px-16 lg:px-24 py-8">
+                
+                <!-- Title -->
+                <div class="text-center mb-4">
+                    <h1 class="text-4xl md:text-6xl font-bold italic-text text-[#1a1a1a]">Relax & Glow Package</h1>
+                </div>
+                
+                <!-- Rating & Location -->
+                <div class="flex justify-center items-center space-x-3 text-lg mb-6">
+                    <div id="es-stars" class="flex text-yellow-500"></div>
+                    <span id="es-rating" class="font-bold text-xl">—</span>
+                    <span class="text-gray-700 ml-3"><i class="fas fa-map-marker-alt mr-1"></i> Cairo, Egypt</span>
+                </div>
+
+                <!-- Price Section -->
+                <div class="relative flex py-2 items-center mb-4">
+                    <div class="flex-grow border-t border-gray-400"></div>
+                    <span class="flex-shrink-0 mx-6 text-gray-600 italic text-2xl">Price</span>
+                    <div class="flex-grow border-t border-gray-400"></div>
+                </div>
+                <div class="text-center text-4xl mb-6 font-bold text-[#c9ada1] tracking-tight" id="es-price">
+                    Loading…
+                </div>
+
+                <!-- Details Section -->
+                <div class="relative flex py-2 items-center">
+                    <div class="flex-grow border-t border-gray-400"></div>
+                    <span class="flex-shrink-0 mx-6 text-gray-600 italic text-2xl">Details</span>
+                    <div class="flex-grow border-t border-gray-400"></div>
+                </div>
+                
+                <!-- Center Aligned Details List -->
+                <div class="max-w-2xl mx-auto flex flex-col items-center gap-y-4 mt-6 mb-8 text-2xl">
+                    <div class="flex items-center w-full"><span class="w-5 h-5 rounded-full brandBullet mr-6 flex-shrink-0 shadow-sm"></span> Massage session</div>
+                    <div class="flex items-center w-full"><span class="w-5 h-5 rounded-full brandBullet mr-6 flex-shrink-0 shadow-sm"></span> Facial cleansing</div>
+                    <div class="flex items-center w-full"><span class="w-5 h-5 rounded-full brandBullet mr-6 flex-shrink-0 shadow-sm"></span> Spa</div>
+                    <div class="flex items-center w-full"><span class="w-5 h-5 rounded-full brandBullet mr-6 flex-shrink-0 shadow-sm"></span> Moroccan bath</div>
+                    <div class="flex items-center w-full"><span class="w-5 h-5 rounded-full brandBullet mr-6 flex-shrink-0 shadow-sm"></span> Oil bath</div>
+                </div>
+
+                <!-- About Section -->
+                <div class="relative flex py-2 items-center">
+                    <div class="flex-grow border-t border-gray-400"></div>
+                    <span class="flex-shrink-0 mx-6 text-gray-600 italic text-2xl">About</span>
+                    <div class="flex-grow border-t border-gray-400"></div>
+                </div>
+                <p class="text-center text-xl text-gray-800 leading-relaxed my-6 px-10 font-serif max-w-5xl mx-auto">
+                    Enjoy a full day of relaxation with our exclusive Jacuzzi, spa, and massage package, the perfect treat for you.
+                </p>
+
+                <!-- Final Rating Summary -->
+                <div class="relative flex py-2 items-center mt-4">
+                    <div class="flex-grow border-t border-gray-400"></div>
+                    <span class="flex-shrink-0 mx-6 text-gray-600 italic text-xl">4.9 Rating</span>
+                    <div class="flex-grow border-t border-gray-400"></div>
+                </div>
+                <p class="text-center text-lg text-gray-600 mb-8 mt-2">
+                    <span id="es-review-count">—</span> reviews
+                </p>
+
+                <!-- Book Now Button -->
+                <div class="text-center pb-8">
+                    <button class="filter-box !justify-center !text-3xl py-6 rounded-full shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 w-full md:w-1/2 mx-auto uppercase tracking-widest">
+                        Book Now
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+    <script src="../api-v5.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const res = await fetch(`${API_BASE}/services/43`);
+                const { data } = await res.json();
+                if (!data) return;
+                document.getElementById('es-price').textContent = Number(data.price).toLocaleString() + ' L.E';
+                const rating = Number(data.avg_rating) || 0;
+                document.getElementById('es-rating').textContent = rating.toFixed(1);
+                document.getElementById('es-stars').innerHTML = Array.from({length:5}).map((_,i) =>
+                    `<i class="${i < Math.floor(rating) ? 'fas' : 'far'} fa-star"></i>`).join('');
+                document.getElementById('es-review-count').textContent = 'Based on ' + (data.review_count || 0);
+            } catch(e) { console.error('extra services live data error', e); }
+        });
+    </script>
+</body>
+</html>

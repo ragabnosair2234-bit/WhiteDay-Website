@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ar" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>White Day - Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        body { overflow-x: hidden; }
+        /* قائمة الموبايل السريعة */
+        #mobile-drawer {
+            transition: all 0.4s ease;
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+        #mobile-drawer.open {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="antialiased font-sans bg-[#F5ECDF]">
+
+    <nav class="relative flex items-center justify-between px-4 md:px-12 h-[120px] md:h-[200px] bg-[#F5ECDF] shadow-sm z-[100]">
+        
+        <div class="w-1/3 flex justify-start z-10">
+            <a href="./Pages/welcome.html" class="hidden md:inline-flex btn-primary btn-nav whitespace-nowrap">
+                Services
+            </a>
+            <button id="menu-toggle" class="md:hidden text-2xl text-black">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+
+        <div class="flex-1 flex justify-center z-10 px-2">
+            <img src="./img/logo.png" alt="White Day" 
+                 class="w-auto object-contain logo">
+        </div>
+
+        <div class="w-1/3 flex justify-end z-10">
+            <div class="hidden md:flex gap-2 lg:gap-4 justify-end">
+                <a href="./Pages/login.html" class="btn-primary btn-nav whitespace-nowrap">Login</a>
+                <a href="./Pages/signup.html" class="btn-primary btn-nav whitespace-nowrap">Create account</a>
+            </div>
+            <a href="./Pages/login.html" class="md:hidden text-3xl text-black px-2">
+                <i class="fas fa-user-circle"></i>
+            </a>
+        </div>
+    </nav>
+
+    <div id="mobile-drawer" class="fixed top-0 left-0 w-full bg-[#F5ECDF] z-[90] shadow-xl lg:hidden border-b-2 border-wedding-burgundy">
+        <div class="pt-[130px] pb-10 px-6 flex flex-col gap-4 text-center">
+            <a href="./Pages/welcome.html" class="text-2xl font-serif italic py-3 border-b">Services</a>
+            <a href="./Pages/login.html" class="text-xl py-3 border-b">Login</a>
+            <a href="./Pages/signup.html" class="text-xl py-3">Create account</a>
+            <button id="close-drawer" class="mt-4 text-gray-400 font-bold uppercase text-xs tracking-widest">Close Menu</button>
+        </div>
+    </div>
+
+    <div class="relative h-[calc(100vh-120px)] md:h-[calc(100vh-200px)] flex items-center justify-center overflow-hidden">
+        <img src="./img/hero-bg.jpg" class="absolute inset-0 w-full h-full object-cover scale-105" alt="Wedding">
+        
+        <div class="relative z-10 text-center px-6 max-w-5xl">
+            <h1 class="hero-text mb-8 md:mb-12">
+                Reserve now all details of your dream day <br>
+                (Wadding hall, Photo session, Music ... etc)
+            </h1>
+            
+            <a href="./Pages/signup.html" class="btn-primary btn-hero mt-20 Reserve_btn">
+                Reserve Now
+            </a>
+        </div>
+    </div>
+
+    <!-- New Showcase Section -->
+    <div class="max-w-8xl mx-auto px-4 mt-20 mb-16">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <!-- Wedding Hall -->
+            <div class="text-center">
+                <h3 class="font-serif italic font-bold text-2xl mb-4">Wedding Hall</h3>
+                <img src="./img/hull-1.jpg" alt="Wedding Hall" class="w-full h-[300px] md:h-[400px] object-cover rounded-3xl shadow-md">
+            </div>
+            <!-- Wedding Dress -->
+            <div class="text-center">
+                <h3 class="font-serif italic font-bold text-2xl mb-4">Wedding Dress</h3>
+                <img src="./img/d56 (4).jpeg" alt="Wedding Dress" class="w-full h-[300px] md:h-[400px] object-cover rounded-3xl shadow-md">
+            </div>
+            <!-- Suit Store -->
+            <div class="text-center">
+                <h3 class="font-serif italic font-bold text-2xl mb-4">Suit Store</h3>
+                <img src="./img/su12 (1).jpeg" alt="Suit Store" class="w-full h-[300px] md:h-[400px] object-cover rounded-3xl shadow-md">
+            </div>
+            <!-- Photographer -->
+            <div class="text-center">
+                <h3 class="font-serif italic font-bold text-2xl mb-4">Photographer</h3>
+                <img src="./img/ph_1.jpeg" alt="Photographer" class="w-full h-[300px] md:h-[400px] object-cover rounded-3xl shadow-md">
+            </div>
+        </div>
+    </div>
+
+    <!-- Reviews Section -->
+    <div class="max-w-8xl mx-auto px-4 mb-20 text-center">
+        <button class="bg-[#D4AEA8] text-[#000000] rounded-[20px] font-serif font-bold italic px-12 py-3 text-2xl mb-8 shadow-sm">Reviews</button>
+
+        <div class="flex flex-col gap-4">
+            <!-- Review 1 -->
+            <div class="bg-[#D4AEA8]/80 rounded-[20px] p-4 flex flex-col md:flex-row items-center gap-6 shadow-sm">
+                <!-- Pravatar -->
+                <img src="https://i.pravatar.cc/150?img=47" class="w-20 h-20 rounded-full object-cover border-4 border-transparent shrink-0">
+                <div class="text-left w-full flex flex-col justify-center">
+                    <div class="text-[#fff200] text-xl flex gap-1 items-center">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        <span class="text-black font-sans ml-3 font-semibold text-base">4,8</span>
+                    </div>
+                    <p class="text-black text-lg mt-1 font-sans">Amazing service and very professional</p>
+                </div>
+            </div>
+
+            <!-- Review 2 -->
+            <div class="bg-[#D4AEA8]/80 rounded-[20px] p-4 flex flex-col md:flex-row items-center gap-6 shadow-sm">
+                <img src="https://i.pravatar.cc/150?img=5" class="w-20 h-20 rounded-full object-cover border-4 border-transparent shrink-0">
+                <div class="text-left w-full flex flex-col justify-center">
+                    <div class="text-[#fff200] text-xl flex gap-1 items-center">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        <span class="text-black font-sans ml-3 font-semibold text-base">4,10</span>
+                    </div>
+                    <p class="text-black text-lg mt-1 font-sans">The experience was smooth and easy</p>
+                </div>
+            </div>
+
+            <!-- Review 3 -->
+            <div class="bg-[#D4AEA8]/80 rounded-[20px] p-4 flex flex-col md:flex-row items-center gap-6 shadow-sm">
+                <img src="https://i.pravatar.cc/150?img=9" class="w-20 h-20 rounded-full object-cover border-4 border-transparent shrink-0">
+                <div class="text-left w-full flex flex-col justify-center">
+                    <div class="text-[#fff200] text-xl flex gap-1 items-center">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        <span class="text-black font-sans ml-3 font-semibold text-base">4,10</span>
+                    </div>
+                    <p class="text-black text-lg mt-1 font-sans">Great quality and fast response</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Contact Info -->
+    <div class="max-w-8xl mx-auto px-4 mb-8 text-left text-black font-sans pb-10">
+        <p class="text-lg">Contact us:</p>
+        <p class="text-lg">01272017621</p>
+        <p class="text-lg">Whitedayweddingplanner@gmail.com</p>
+    </div>
+
+    <script>
+        const toggleBtn = document.getElementById('menu-toggle');
+        const closeBtn = document.getElementById('close-drawer');
+        const drawer = document.getElementById('mobile-drawer');
+
+        toggleBtn.addEventListener('click', () => {
+            drawer.classList.add('open');
+        });
+
+        closeBtn.addEventListener('click', () => {
+            drawer.classList.remove('open');
+        });
+
+        // قفل المنيو لو دوسنا براها
+        window.onclick = function(event) {
+            if (event.target == drawer) {
+                drawer.classList.remove('open');
+            }
+        }
+    </script>
+
+</body>
+</html>

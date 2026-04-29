@@ -1,0 +1,282 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap');
+
+:root {
+  --MainColor: #D4AEA8; /* Updated globally to match design */
+  --InputBg: #F5F5F5;
+  --fontColor: #000000;
+  --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Playfair Display', serif;
+    color: var(--fontColor);
+    background-color: #F5ECDF;
+}
+.logo{
+    height: 200px !important;
+}
+@media (min-width: 768px) {
+    .logo {
+        height: 250px !important;
+    }
+}
+@media (min-width: 1024px) {
+    .logo {
+        height: 300px !important;
+    }
+}
+@media (min-width: 1280px) {
+    .logo {
+        height: 350px !important;
+    }
+}
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+    color: var(--fontColor);
+    font-weight: normal;
+}
+
+.italic-text {
+    font-style: italic;
+}
+
+/* Shared Buttons style */
+.btn-primary {
+    background-color: var(--MainColor);
+    color: var(--fontColor) !important;
+    font-family: 'Playfair Display', serif;
+    text-align: center;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    opacity: 0.8;
+}
+
+.btn-nav {
+    padding: 0.5rem 1.2rem;
+    font-size: 1rem;
+    font-style: italic;
+    border-radius: 20px;
+}
+@media (min-width: 1024px) {
+    .btn-nav {
+        padding: 0.6rem 2.5rem;
+        font-size: 1.25rem;
+    }
+}
+
+.btn-hero {
+    padding: 0.8rem 2rem;
+    font-size: 1.5rem;
+    border-radius: 25px;
+    font-style: italic;
+}
+@media (min-width: 768px) {
+    .btn-hero {
+        padding: 1rem 3rem;
+        font-size: 2.2rem;
+    }
+}
+
+.btn-auth {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.5rem;
+    border-radius: 25px;
+    font-weight: 600;
+}
+
+.btn-category {
+    padding: 1.2rem 2rem;
+    font-size: 1.6rem;
+    border-radius: 30px;
+    font-weight: normal;
+    background-color: var(--MainColor);
+    width: 100%;
+}
+
+.btn-category-large {
+    padding: 1.2rem 4rem;
+    font-size: 1.6rem;
+    border-radius: 30px;
+    font-weight: normal;
+}
+
+/* Text on hero */
+.hero-text {
+    color: var(--MainColor);
+    font-size: 1.8rem;
+    font-style: italic;
+    line-height: 1.4;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.5); /* subtle shadow just in case */
+}
+@media (min-width: 768px) {
+    .hero-text {
+        font-size: 2.5rem;
+    }
+}
+.Reserve_btn{
+    transform: translate(0, 20%);
+}
+
+/* Form Inputs */
+.form{
+    transform: translate(0, -20%);
+}
+.custom-input-group {
+    position: relative;
+    width: 100%;
+    margin-bottom: 1.25rem;
+}
+
+.custom-input {
+    width: 100%;
+    padding: 1.25rem 1.5rem;
+    padding-right: 3rem; /* space for icon */
+    background-color: var(--InputBg);
+    border: none;
+    border-radius: 25px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--fontColor);
+}
+
+.custom-input::placeholder {
+    color: #a0a0a0;
+}
+
+.custom-input:focus {
+    outline: none;
+    background-color: #EFEFEF;
+}
+
+.custom-input-icon {
+    position: absolute;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #000;
+    font-size: 1.2rem;
+}
+
+/* Filter Box */
+.filter-box {
+    background-color: var(--MainColor);
+    color: var(--fontColor);
+    padding: 0.8rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.5rem;
+    width: 100%;
+    border: 1px solid rgba(0,0,0,0.1);
+    cursor: pointer;
+    font-family: 'Playfair Display', serif;
+    transition: background-color 0.3s ease;
+}
+
+.filter-box i {
+    font-size: 1.2rem;
+    opacity: 0.8;
+}
+
+.filter-box:hover {
+    background-color: #b89b91;
+}
+
+/* Card details (booking text) */
+.card-container {
+    border: 1px solid #eee;
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+}
+
+.card-container:hover {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.card-bottom {
+    background-color: #F8D8CF;
+    padding: 1rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(0,0,0,0.05);
+}
+
+.card-title {
+    font-size: 1.4rem;
+    margin: 0;
+    line-height: 1.2;
+    font-weight: 500;
+    font-style: italic;
+}
+
+.card-price {
+    font-size: 1.1rem;
+    margin: 0 0 0.2rem 0;
+    line-height: 1;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    color: #4a4a4a;
+}
+
+.card-book-btn {
+    font-size: 1.2rem;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    color: #000;
+    font-family: 'Playfair Display', serif;
+    cursor: pointer;
+    text-align: right;
+    display: block;
+    width: 100%;
+    line-height: 1;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: all 0.3s ease;
+}
+
+.card-book-btn:hover {
+    color: var(--MainColor);
+    opacity: 1;
+    letter-spacing: 1px;
+}
+
+/* Utility to override tailwind if needed */
+.text-main-color {
+    color: var(--MainColor);
+}
+
+.WelcomeP{
+    position: relative;
+}
+.Welcome_couple{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+
+}
+.Welcome_logo{
+
+    transform: translate(10%, -50%);
+}

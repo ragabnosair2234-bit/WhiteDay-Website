@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ar" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>White Day - Wedding Planner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+        .page { display: none; }
+        .page.active { display: block; }
+    </style>
+</head>
+<body class="font-sans antialiased">
+    <div class="relative min-h-screen bg-[#F5ECDF] p-6 md:p-10 text-center font-serif h-[100vh]">
+        <img src="../img/flowers-tr.png" class="absolute top-0 right-0 w-32 md:w-56 opacity-80">
+        <img src="../img/flowers-tl.png" class="absolute top-0 left-0 w-32 md:w-56 opacity-80">
+
+        <div class="justify-center items-start md:items-center gap-6 md:gap-16 mb-14  z-10 w-full max-w-4xl mx-auto px-4 mt-8 md:mt-4 text-center WelcomeP">
+                <div class="mt-12 md:mt-24 Welcome_logo">
+                    <img src="../img/logo.png" class="mx-auto object-contain mb-6 md:mb-10 logo">
+                </div>
+                
+                <div class=" flex flex-row  items-center justify-center Welcome_couple">
+                    <img src="../img/couple-icon.png" class="w-40 md:w-64 object-contain">
+                    <h2 class="text-5xl md:text-[75px] font-bold italic-text m-0 tracking-wide text-[#000]">Welcome</h2>
+                </div>
+        </div>
+
+        <!-- Row 1 -->
+        <div class="flex flex-wrap justify-center gap-6 w-[90%] mx-auto relative z-10 mb-6">
+            <a href="./halls.html" class="btn-primary btn-category flex-1 px-8">Book a hall</a>
+            <a href="./dress.html" class="btn-primary btn-category flex-1 px-8">Book a dress</a>
+            <a href="./suits.html" class="btn-primary btn-category flex-1 px-8">Book a suit</a>
+        </div>
+        
+        <!-- Row 2 -->
+        <div class="flex flex-wrap justify-center gap-6 w-[90%] mx-auto relative z-10 mb-6">
+            <a href="./makeup.html" class="btn-primary btn-category flex-1 px-8">Book a makeup artist</a>
+            <a href="./photographer.html" class="btn-primary btn-category flex-1 px-8">Book a photographer</a>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="flex flex-wrap justify-center gap-6 w-[90%] mx-auto relative z-10 mb-6">
+            <a href="./barber.html" class="btn-primary btn-category flex-1 px-8">Book a barbar shop</a>
+            <a href="./cars.html" class="btn-primary btn-category flex-1 px-8">Book a cars</a>
+            <a href="./artists.html" class="btn-primary btn-category flex-1 px-8">Book a artists</a>
+        </div>
+
+        <!-- Row 4 -->
+        <div class="flex flex-wrap justify-center gap-6 w-[90%] mx-auto relative z-10 mb-6">
+            <a href="./emergency_bag.html" class="btn-primary btn-category flex-1 px-8">Book a Emergency bag</a>
+            <a href="./bridesmaid.html" class="btn-primary btn-category flex-1 px-8">Book a Bridesmaid</a>
+        </div>
+
+        <!-- Row 5 -->
+        <div class="flex flex-wrap justify-center gap-6 w-[90%] mx-auto relative z-10">
+            <a href="./catering.html" class="btn-primary btn-category flex-1 px-8">Book a catering</a>
+            <a href="./extra_services.html" class="btn-primary btn-category flex-1 px-8">Book a extra services</a>
+        </div>
+
+        <div class="mt-12 md:mt-16 relative z-10 flex justify-center">
+            <a href="../index.html" class="btn-primary btn-category-large">My reservations</a>
+        </div>
+    </div>
+    
+</body>
+</html>
+
+
