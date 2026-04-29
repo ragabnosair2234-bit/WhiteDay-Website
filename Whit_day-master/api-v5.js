@@ -129,6 +129,13 @@ const IMAGE_POOLS = {
   ],
 };
 
+// ── Filter / sort state ───────────────────────────────────────────────────────
+
+/** Raw services returned by the API — kept for re-sorting without a new fetch */
+let _servicesCache    = [];
+let _currentPool      = [];
+let _currentContainerId = '';
+
 // ── UI helpers ───────────────────────────────────────────────────────────────
 
 /** Build star HTML (Font Awesome) */
@@ -163,8 +170,98 @@ function buildCard(s, imgSrc) {
 }
 
 /**
+ * Render a list of services into the grid.
+ * Uses service_id % pool.length for a STABLE image↔name mapping that
+ * survives re-sorting (avoids names appearing under the wrong photo).
+ */
+function renderServices(data, pool, containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = data.map((s) => {
+    const imgFile = pool[s.service_id % pool.length];
+    const imgSrc  = `../img/${imgFile}`;
+    return buildCard(s, imgSrc);
+  }).join('');
+}
+
+/**
+ * Wire up the three filter buttons (Prices / Location / Ratings).
+ * Each click cycles: off → ascending → descending → off.
+ * Only one sort is active at a time; the others reset.
+ */
+function wireFilters() {
+  const buttons = Array.from(document.querySelectorAll('.filter-box'));
+  if (buttons.length < 3) return;
+
+  // Sort modes per button: 0=off, 1=asc, 2=desc
+  const state = [0, 0, 0];
+
+  const ICON_MAP = {
+    0: 'fa-sort',
+    1: 'fa-sort-up',
+    2: 'fa-sort-down',
+  };
+
+  const LABEL = ['Prices', 'Location', 'Ratings'];
+
+  function applyBtnState(btn, i) {
+    const icon = btn.querySelector('i');
+    if (icon) {
+      icon.className = `fas ${ICON_MAP[state[i]]}`;
+    }
+    // Highlight active sort button
+    btn.style.fontWeight = state[i] !== 0 ? '700' : '';
+  }
+
+  function sortData(idx) {
+    let data = [..._servicesCache];
+    if (state[idx] === 0) {
+      // No sort — restore original order (by avg_rating desc as returned by API)
+      return data;
+    }
+    const asc = state[idx] === 1;
+    if (idx === 0) {
+      // Prices
+      data.sort((a, b) => asc ? a.price - b.price : b.price - a.price);
+    } else if (idx === 1) {
+      // Location (city)
+      data.sort((a, b) => {
+        const ca = (a.city || '').toLowerCase();
+        const cb = (b.city || '').toLowerCase();
+        return asc ? ca.localeCompare(cb) : cb.localeCompare(ca);
+      });
+    } else {
+      // Ratings
+      data.sort((a, b) => asc ? a.avg_rating - b.avg_rating : b.avg_rating - a.avg_rating);
+    }
+    return data;
+  }
+
+  buttons.forEach((btn, i) => {
+    // Remove any stale listeners by replacing the button node
+    const clone = btn.cloneNode(true);
+    btn.parentNode.replaceChild(clone, btn);
+    buttons[i] = clone;
+
+    clone.addEventListener('click', () => {
+      // Cycle state for this button
+      state[i] = (state[i] + 1) % 3;
+      // Reset all other buttons
+      state.forEach((_, j) => {
+        if (j !== i) { state[j] = 0; applyBtnState(buttons[j], j); }
+      });
+      applyBtnState(clone, i);
+      renderServices(sortData(i), _currentPool, _currentContainerId);
+    });
+
+    // Reset icon label in case the pool is loaded again
+    clone.innerHTML = `${LABEL[i]} <i class="fas ${ICON_MAP[state[i]]}"></i>`;
+  });
+}
+
+/**
  * Fetch services from the REST API and render cards.
- * Images cycle through the per-category pool so every card is different.
+ * Images use service_id % pool.length for a stable name↔image pairing.
  */
 async function loadServices(containerId, typeId, fallbackImg) {
   const container = document.getElementById(containerId);
@@ -182,14 +279,16 @@ async function loadServices(containerId, typeId, fallbackImg) {
 
     const pool = IMAGE_POOLS[typeId] || [fallbackImg];
 
-    container.innerHTML = json.data.map((s, idx) => {
-      const imgFile = pool[idx % pool.length];
-      const imgSrc  = `../img/${imgFile}`;
-      return buildCard(s, imgSrc);
-    }).join('');
+    // Cache for re-sorting on filter clicks
+    _servicesCache      = json.data;
+    _currentPool        = pool;
+    _currentContainerId = containerId;
 
-    // Inject shared modals once (booking + wallet)
+    renderServices(json.data, pool, containerId);
+
+    // Inject shared modals and wire filter buttons
     injectModals();
+    wireFilters();
 
   } catch (err) {
     console.error('[loadServices] error:', err);
