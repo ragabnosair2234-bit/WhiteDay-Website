@@ -20,11 +20,28 @@ async function getAuthUser(req: Request): Promise<JWTPayload | null> {
 /**
  * Resolve the next available integer primary key for a table.
  * Uses MAX(col)+1 — suitable for low-concurrency demo workloads.
+ * `table` and `col` are validated against an allowlist to prevent injection.
  */
+const NEXT_ID_ALLOWLIST: Record<string, string[]> = {
+  booking:        ["booking_id"],
+  wallet_payment: ["transaction_id"],
+  review:         ["review_id"],
+  dispute:        ["dispute_id"],
+};
+
 async function nextId(table: string, col: string): Promise<number> {
+  const allowedCols = NEXT_ID_ALLOWLIST[table];
+  if (!allowedCols || !allowedCols.includes(col)) {
+    throw new Error(`nextId: disallowed table/column combination: ${table}.${col}`);
+  }
   const rows = await query(`SELECT MAX(${col}) AS m FROM ${table}`, []);
   const max = (rows[0] as any)?.m ?? 0;
   return (max as number) + 1;
+}
+
+/** Return today's date as YYYY-MM-DD string */
+function today(): string {
+  return new Date().toISOString().split("T")[0];
 }
 
 // ─── Router ─────────────────────────────────────────────────────────────────
@@ -229,12 +246,12 @@ restRouter.post("/bookings", async (c) => {
     const price = (svcRows[0] as any).price as number;
 
     const bookingId = await nextId("booking", "booking_id");
-    const today = new Date().toISOString().split("T")[0];
+    const todayStr = today();
 
     await query(
       `INSERT INTO booking (booking_id, status, booking_date, delivery_date, total_amount, user_id)
        VALUES (?, 'pending', ?, ?, ?, ?)`,
-      [bookingId, today, event_date, price, authUser.userId]
+      [bookingId, todayStr, event_date, price, authUser.userId]
     );
 
     await query(
@@ -413,7 +430,7 @@ restRouter.post("/wallet/topup", async (c) => {
     // We insert with booking_id pointing to the first booking as a workaround for NOT NULL FK.
     // Better: use a nullable booking_id. Here we use a dedicated sentinel booking row if exists.
     const txId = await nextId("wallet_payment", "transaction_id");
-    const today = new Date().toISOString().split("T")[0];
+    const todayStr = today();
     const balanceBefore = await getWalletBalance(authUser.userId);
     const balanceAfter = balanceBefore + amount;
 
@@ -428,7 +445,7 @@ restRouter.post("/wallet/topup", async (c) => {
     await query(
       `INSERT INTO wallet_payment (transaction_id, payment_method, amount, commission, balance_after, payment_date, booking_id, user_id)
        VALUES (?, 'topup', ?, 0, ?, ?, ?, ?)`,
-      [txId, amount, balanceAfter, today, sentinelBookingId, authUser.userId]
+      [txId, amount, balanceAfter, todayStr, sentinelBookingId, authUser.userId]
     );
 
     return c.json({ data: { transaction_id: txId, amount, balance_after: balanceAfter } }, 201);
@@ -459,13 +476,13 @@ restRouter.post("/wallet/pay", async (c) => {
     if (balance < amount) return c.json({ error: "Insufficient wallet balance" }, 422);
 
     const txId = await nextId("wallet_payment", "transaction_id");
-    const today = new Date().toISOString().split("T")[0];
+    const todayStr = today();
     const balanceAfter = balance - amount;
 
     await query(
       `INSERT INTO wallet_payment (transaction_id, payment_method, amount, commission, balance_after, payment_date, booking_id, user_id)
        VALUES (?, 'wallet', ?, ?, ?, ?, ?, ?)`,
-      [txId, amount, commission, balanceAfter, today, booking_id, authUser.userId]
+      [txId, amount, commission, balanceAfter, todayStr, booking_id, authUser.userId]
     );
 
     await query("UPDATE booking SET status = 'confirmed' WHERE booking_id = ?", [booking_id]);
@@ -537,12 +554,12 @@ restRouter.post("/reviews", async (c) => {
     const star = Math.min(5, Math.max(1, Number(rating)));
 
     const reviewId = await nextId("review", "review_id");
-    const today = new Date().toISOString().split("T")[0];
+    const todayStr = today();
 
     await query(
       `INSERT INTO review (review_id, rate_star, comment, created_at, user_id, service_id)
        VALUES (?, ?, ?, ?, ?, ?)`,
-      [reviewId, star, comment ?? null, today, authUser.userId, service_id]
+      [reviewId, star, comment ?? null, todayStr, authUser.userId, service_id]
     );
 
     // Update avg_rating and review_count on service
@@ -576,12 +593,12 @@ restRouter.post("/disputes", async (c) => {
     }
 
     const disputeId = await nextId("dispute", "dispute_id");
-    const today = new Date().toISOString().split("T")[0];
+    const todayStr = today();
 
     await query(
       `INSERT INTO dispute (dispute_id, issue_description, created_at, user_id, booking_id)
        VALUES (?, ?, ?, ?, ?)`,
-      [disputeId, description, today, authUser.userId, booking_id]
+      [disputeId, description, todayStr, authUser.userId, booking_id]
     );
 
     return c.json({ data: { dispute_id: disputeId } }, 201);
